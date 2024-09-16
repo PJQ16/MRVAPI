@@ -16,7 +16,7 @@ const VerifyModel = sequelize.define('verification',{
         defaultValue:null
     },
     verificationTokenExpiry:{
-        type: DataTypes.STRING(255),
+        type: DataTypes.DATE,
         defaultValue:null
     },
     isVerified:{
@@ -26,6 +26,6 @@ const VerifyModel = sequelize.define('verification',{
 });
 
 
-    VerifyModel.sync(      {alter:true}    );
+ /*    VerifyModel.sync(      {alter:true}    ); */
     module.exports = VerifyModel;
 

@@ -1,20 +1,19 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
-const RoleModel = sequelize.define('role',{
+const UnitModels = sequelize.define('unit',{
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey:true,
         autoIncrement:true,
       },
-    role_name:{
-        type: DataTypes.STRING(255),
-        unique:true,
+      unit_name:{
+        type:DataTypes.STRING(255),
         defaultValue:null
-    }
+      },
 });
 
 
-  /*   RoleModel.sync(   {alter:true}     ); */
-    module.exports = RoleModel;
+    UnitModels.sync(    {alter:true}   );
+    module.exports = UnitModels;
 

@@ -7,10 +7,14 @@ const Multi_factorModel = sequelize.define('multi_factor',{
         primaryKey:true,
         autoIncrement:true,
       },
-    multi_factor_production: {
-        type: DataTypes.DECIMAL(10,2),
-        defaultValue:null
+      milestore_id:{
+        type:DataTypes.INTEGER(11),
+        allowNull:false
       },
+    multi_factor_production: {
+            type: DataTypes.DECIMAL(10,2),
+            defaultValue:null
+        },
     multi_factor_labor:{
         type: DataTypes.DECIMAL(10,2),
         defaultValue:null

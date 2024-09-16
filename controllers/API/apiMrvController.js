@@ -26,14 +26,50 @@ exports.read = async(req,res)=>{
      }
 }
 
-exports.list = async(req,res)=>{
-    try{
-       const ShowDataList = await MrvModel.findAll();
-       res.status(200).json(ShowDataList);
-    }catch(e){
-        res.status(500).json('Server Error' + e.message);
-    }
-}
+exports.list = async (req, res) => {
+  try {
+    // ดึงข้อมูลปี 'year_mrv' จากตาราง MrvModel
+    const mrvmodels = await MrvModel.findAll({
+      attributes: ['year_mrv'] // กำหนดเฉพาะคอลัมน์ที่ต้องการ
+    });
+
+    // ดึงข้อมูลชื่อองค์กรจากตาราง OrganizationModel
+    const organizemoels = await OrganizationModel.findAll({
+      attributes: ['organization_name']
+    });
+
+    const planmodels = await PlanModel.findAll({
+      attributes:['plan_name']
+    })
+
+    // สร้าง array สำหรับเก็บข้อมูล
+    const mrv = [];
+
+    // เพิ่มข้อมูลปีและองค์กรลงใน array
+    mrvmodels.forEach(item => {
+      const year = item.year_mrv;
+      
+      // สร้าง entry สำหรับปีนั้นๆ และเพิ่มข้อมูลองค์กร
+      mrv.push({
+        years: year,
+        organization: organizemoels.map(org => ({
+          organization_name: org.organization_name,
+          plan:planmodels.map(plan =>({
+              plan_name:plan.plan_name
+          }))
+        }))
+      });
+    });
+
+    // ส่งข้อมูล JSON ไปยัง client
+    res.status(200).json({ mrv });
+  } catch (e) {
+    // ส่งข้อความแสดงข้อผิดพลาดในกรณีที่เกิดข้อผิดพลาด
+    res.status(500).json({ message: 'Server Error', error: e.message });
+  }
+};
+
+
 
 exports.create = async(req,res)=>{
     try{

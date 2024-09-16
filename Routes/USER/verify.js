@@ -5,7 +5,7 @@ const {read,list,create,modify,remove} = require('../../controllers/USER/verifyC
 
 //กำหนด http request GET POST PUT DELETE
 router.get('/verify',list);
-router.get('/verify/:id',read);
+router.get('/verify/:token',read);
 router.post('/verify',create);
 router.put('/verify/:id',modify);
 router.delete('/verify/:id',remove);

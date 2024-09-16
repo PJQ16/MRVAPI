@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
- 
+const bcrypt = require('bcrypt');
+
 const UserModel = sequelize.define('user',{
     id: {
         type: DataTypes.INTEGER(11),
@@ -35,10 +36,19 @@ const UserModel = sequelize.define('user',{
     organize_id:{
         type: DataTypes.INTEGER(11),
         allowNull:false
+    },
+    sessionId:{
+        type: DataTypes.INTEGER(255),
+        defaultValue:null
     }
 });
 
+//กำหนดpass word ให้เป็น hash
+ UserModel.beforeCreate(async (user, options) => {
+    const hash = await bcrypt.hash(user.password, 10);
+    user.password = hash;
+  }); 
 
-    UserModel.sync(   {alter:true}    );
+    UserModel.sync(   /* {force:true}   */  );
     module.exports = UserModel;
 

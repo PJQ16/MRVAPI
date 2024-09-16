@@ -1,16 +1,30 @@
 //สร้างcontroller  export ส่งออก . ชื่อตัวแปล
 const {VerificationModel} =  require('../../models/associate')
 exports.read = async(req,res)=>{
-    try{
-        const { id } = req.params; // ถ้าใช้ URL params เช่น /api/resource/:id
-        if (!id) {
-          return res.status(400).json('Primary key (id) is required');
-        }
-        const ShowData = await VerificationModel.findByPk(id);
-        res.status(200).json(ShowData);
-     }catch(e){
-         res.status(500).json('Server Error' + e.message);
-     }
+  const { token } = req.params;
+  try {
+      const verify = await VerificationModel.findOne({
+          where: {
+              verificationToken: token,
+              verificationTokenExpiry: {
+                  [Op.gt]: new Date() // Check if token is not expired
+              }
+          }
+      });
+
+      if (!verify) {
+          return res.status(400).json({ error: 'Invalid or expired token' });
+      }
+
+      verify.isVerified = 1;
+      verify.verificationToken = null;
+      verify.verificationTokenExpiry = null;
+      await verify.save();
+
+      res.status(200).json({ message: 'Email verified successfully' });
+  } catch (error) {
+      res.status(500).json({ error: 'Internal server error' });
+  }
 }
 
 exports.list = async(req,res)=>{

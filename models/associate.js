@@ -12,6 +12,11 @@ const OrganizationModel = require('./USER/OrganizationModel');
 const UserModel = require('./USER/UserModel');
 const VerificationModel = require('./USER/VerificationModel');
 const RoleModel = require('./USER/RoleModel');
+const PdpModel = require('./PROCESS/PdpModel');
+const PdpDetailModel = require('./PROCESS/PdpDetailModel');
+const PdpTypeModel = require('./PROCESS/PdpTypeModel');
+const TargetModel = require('./PROCESS/TargetModel');
+const UnitModel = require('./PROCESS/UnitModel');
 
 // Associations
 // User and Organization Associations
@@ -99,5 +104,10 @@ module.exports = {
     OrganizationModel,
     UserModel,
     VerificationModel,
-    RoleModel
+    RoleModel,
+    PdpModel,
+    PdpDetailModel,
+    PdpTypeModel,
+    TargetModel,
+    UnitModel, 
 };
