@@ -1,19 +1,20 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
-const PowerTypeModels = sequelize.define('pdp_type',{
+const PeriodModel = sequelize.define('period',{
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey:true,
         autoIncrement:true,
       },
-      type_name:{
-        type:DataTypes.STRING(255),
+      period_type:{
+        type:DataTypes.STRING(50),
+        allowNull:true,
         defaultValue:null
       },
 });
 
 
-    PowerTypeModels.sync(    {alter:true}   );
-    module.exports = PowerTypeModels;
+    PeriodModel.sync(    {alter:true}   );
+    module.exports = PeriodModel;
 

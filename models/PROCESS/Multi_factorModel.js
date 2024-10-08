@@ -7,25 +7,20 @@ const Multi_factorModel = sequelize.define('multi_factor',{
         primaryKey:true,
         autoIncrement:true,
       },
-      milestore_id:{
-        type:DataTypes.INTEGER(11),
-        allowNull:false
+    enocomy:{
+        type:DataTypes.FLOAT(20,2),
+        defaultValue:null,
+        allowNull:true
       },
-    multi_factor_production: {
+    social: {
             type: DataTypes.DECIMAL(10,2),
-            defaultValue:null
+            defaultValue:null,
+            allowNull:true
         },
-    multi_factor_labor:{
+    scc:{
         type: DataTypes.DECIMAL(10,2),
-        defaultValue:null
-    },
-    multi_factor_carbon:{
-        type: DataTypes.DECIMAL(10,2),
-        defaultValue:null
-    },
-    user_id:{
-        type: DataTypes.INTEGER(11),
-        defaultValue:null
+        defaultValue:null,
+        allowNull:true
     }
 });
 

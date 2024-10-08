@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
-const TargetModels = sequelize.define('target',{
+const TargetModel = sequelize.define('target',{
     target_id: {
         type: DataTypes.STRING(10),
         primaryKey:true,
@@ -33,6 +33,6 @@ const TargetModels = sequelize.define('target',{
 });
 
 
-    TargetModels.sync(    {alter:true}   );
-    module.exports = TargetModels;
+    TargetModel.sync(    {alter:true}   );
+    module.exports = TargetModel;
 

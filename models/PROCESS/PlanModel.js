@@ -7,7 +7,7 @@ const PlanModel = sequelize.define('plan',{
         primaryKey:true,
         autoIncrement:true,
       },
-    plan_name: {
+    name: {
         type: DataTypes.STRING(255),
         defaultValue:null
       },

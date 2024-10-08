@@ -1,55 +1,35 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
-const Co_benefitModel = sequelize.define('co_benefit',{
+const CoBenefitModel = sequelize.define('CoBenefit',{
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey:true,
         autoIncrement:true,
       },
-    cobenefit_year: {
-        type: DataTypes.INTEGER(11),
-        allowNull:false
-      },
-    cobenefit_plan:{
-        type: DataTypes.INTEGER(11),
-        allowNull:false
+    year:{
+        type:DataTypes.INTEGER(11),
+        defaultValue:null
     },
-    passive_income:{
-        type: DataTypes.DECIMAL(20,2),
-        allowNull:false
+    plans_id:{
+        type:DataTypes.INTEGER(11),
+        defaultValue:null
     },
-    employment:{
-        type: DataTypes.DECIMAL(20,2),
-        allowNull:false
+    co_benefit_economics:{
+        type:DataTypes.FLOAT(20,2),
+        defaultValue:null
     },
-    generate_income:{
-        type: DataTypes.DECIMAL(20,2),
-        allowNull:false
+    co_benefit_social:{
+        type:DataTypes.FLOAT(20,2),
+        defaultValue:null
     },
-    ghg_reduction:{
-        type: DataTypes.DECIMAL(20,2),
-        allowNull:false
-    },
-    economic_cobenefit:{
-        type: DataTypes.DECIMAL(20,2),
-        allowNull:false
-    },
-    social_cobenefit:{
-        type: DataTypes.DECIMAL(20,2),
-        allowNull:false
-    },
-    environment_cobenefit:{
-        type: DataTypes.DECIMAL(20,2),
-        allowNull:false
-    },
-    user_id:{
-        type: DataTypes.INTEGER(11),
-       allowNull:false
-    }
+    co_benefit_environment:{
+        type:DataTypes.FLOAT(20,2),
+        defaultValue:null
+    }       
 });
 
 
-    Co_benefitModel.sync(      {alter:true}     );
-    module.exports = Co_benefitModel;
+    CoBenefitModel.sync(      {alter:true}     ); 
+    module.exports = CoBenefitModel;
 

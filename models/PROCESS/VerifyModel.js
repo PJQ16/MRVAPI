@@ -1,19 +1,25 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
-const UnitModels = sequelize.define('unit',{
+const VerifyModel = sequelize.define('verify',{
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey:true,
         autoIncrement:true,
       },
-      unit_name:{
+      year_verify:{
+        type: DataTypes.INTEGER(11),
+        allowNull:true,
+        defaultValue:null
+      },
+      active:{
         type:DataTypes.STRING(255),
+        allowNull:true,
         defaultValue:null
       },
 });
 
 
-    UnitModels.sync(    {alter:true}   );
-    module.exports = UnitModels;
+    VerifyModel.sync(    {alter:true}   );
+    module.exports = VerifyModel;
 

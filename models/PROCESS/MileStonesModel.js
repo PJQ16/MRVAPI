@@ -1,35 +1,37 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
-const MileStoneModels = sequelize.define('milestone',{
+const MileStoneModel = sequelize.define('milestone',{
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey:true,
         autoIncrement:true,
       },
-      first_year:{
-        type:DataTypes.INTEGER(11),
-        allowNull:false
+    period_type:{
+        type:DataTypes.STRING(50),
+        defaultValue:null
       },
-      last_year: {
-            type: DataTypes.INTEGER(11),
-            defaultValue:null
+    actual_year: {
+        type: DataTypes.INTEGER(11),
+        defaultValue:null
         },
-    active_year:{
+    multifactor_id:{
         type: DataTypes.INTEGER(11),
         defaultValue:null
     },
-    note:{
-        type: DataTypes.STRING(255),
-        defaultValue:null
+    co_benefit_active:{
+        type: DataTypes.INTEGER(11),
+        defaultValue:0,
+        allowNull:false
     },
-    status:{
-        type: DataTypes.STRING(255),
-        defaultValue:null
+    active:{
+        type: DataTypes.INTEGER(11),
+        defaultValue:null,
+        comment:'0,1'
     }
 });
 
 
-    MileStoneModels.sync(    {alter:true}   );
-    module.exports = MileStoneModels;
+    MileStoneModel.sync(    {alter:true}   );
+    module.exports = MileStoneModel;
 
