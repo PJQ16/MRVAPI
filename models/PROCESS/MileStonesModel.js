@@ -32,6 +32,6 @@ const MileStoneModel = sequelize.define('milestone',{
 });
 
 
-    MileStoneModel.sync(    {alter:true}   );
+   /*  MileStoneModel.sync(    {alter:true}   ); */
     module.exports = MileStoneModel;
 

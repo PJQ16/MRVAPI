@@ -15,6 +15,6 @@ const PeriodModel = sequelize.define('period',{
 });
 
 
-    PeriodModel.sync(    {alter:true}   );
+   /*  PeriodModel.sync(    {alter:true}   ); */
     module.exports = PeriodModel;
 

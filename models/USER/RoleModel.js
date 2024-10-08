@@ -15,6 +15,6 @@ const RoleModel = sequelize.define('role',{
 });
 
 
-  /*   RoleModel.sync(   {alter:true}     ); */
+    /* RoleModel.sync(   {alter:true}     ); */
     module.exports = RoleModel;
 

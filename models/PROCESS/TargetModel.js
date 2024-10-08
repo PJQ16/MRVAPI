@@ -33,6 +33,6 @@ const TargetModel = sequelize.define('target',{
 });
 
 
-    TargetModel.sync(    {alter:true}   );
+   /*  TargetModel.sync(    {alter:true}   ); */
     module.exports = TargetModel;
 

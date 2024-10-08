@@ -30,6 +30,6 @@ const CoBenefitModel = sequelize.define('CoBenefit',{
 });
 
 
-    CoBenefitModel.sync(      {alter:true}     ); 
+   /*  CoBenefitModel.sync(      {alter:true}     );  */
     module.exports = CoBenefitModel;
 

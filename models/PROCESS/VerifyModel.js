@@ -20,6 +20,6 @@ const VerifyModel = sequelize.define('verify',{
 });
 
 
-    VerifyModel.sync(    {alter:true}   );
+    /* VerifyModel.sync(    {alter:true}   ); */
     module.exports = VerifyModel;
 

@@ -22,8 +22,10 @@ const RoleModel = require('./USER/RoleModel');
 
 
 // Associations
+
+
 // User and Organization Associations
-OrganizationModel.hasMany(UserModel, {
+/* OrganizationModel.hasMany(UserModel, {
     foreignKey: 'organize_id',
     as: 'organizationUser'
 });
@@ -51,18 +53,27 @@ UserModel.hasMany(VerificationModel, {
 VerificationModel.belongsTo(UserModel, {
     foreignKey: 'user_id',
      as: 'verificationUsers'
-}); 
+});  */
 
-
+ 
 // Export models and sequelize instance
 module.exports = {
     sequelize,
     Co_benefitModel,
-    Multi_factorModel,
+    DetailModel,
+    MileStoneModel,
+    Multi_factorModel, 
+    OutPutModel,
+    PeriodModel,
     PlanModel,
-    OrganizationModel,
+    StaticAssumptionModel,
+    subCategoryModel,
+    SubTargetModel,
+    TargetModel,
+    TransectionModel, 
+    VerifyModel,
+    OrganizationModel, 
     UserModel,
     VerificationModel,
-    RoleModel,
-    TargetModel,
+    RoleModel 
 };

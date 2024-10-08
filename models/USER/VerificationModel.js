@@ -26,6 +26,6 @@ const VerifyModel = sequelize.define('verification',{
 });
 
 
- /*    VerifyModel.sync(      {alter:true}    ); */
+   /*  VerifyModel.sync(      {alter:true}    ); */
     module.exports = VerifyModel;
 

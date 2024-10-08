@@ -49,6 +49,6 @@ const UserModel = sequelize.define('user',{
     user.password = hash;
   }); 
 
-    UserModel.sync(   /* {force:true}   */  );
+   /*  UserModel.sync(   {alter:true}   ); */
     module.exports = UserModel;
 

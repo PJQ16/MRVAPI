@@ -25,6 +25,6 @@ const Multi_factorModel = sequelize.define('multi_factor',{
 });
 
 
-    Multi_factorModel.sync(    {alter:true}   );
+   /*  Multi_factorModel.sync(    {alter:true}   ); */
     module.exports = Multi_factorModel;
 

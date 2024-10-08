@@ -1,12 +1,12 @@
 //สร้างcontroller  export ส่งออก . ชื่อตัวแปล
-const {MetricModel} = require('../../models/associate');
+const {subCategoryModel} =  require('../../models/associate');
 exports.read = async(req,res)=>{
     try{
         const { id } = req.params; // ถ้าใช้ URL params เช่น /api/resource/:id
         if (!id) {
           return res.status(400).json('Primary key (id) is required');
         }
-        const ShowData = await MetricModel.findByPk(id);
+        const ShowData = await subCategoryModel.findByPk(id);
         res.status(200).json(ShowData);
      }catch(e){
          res.status(500).json('Server Error' + e.message);
@@ -15,7 +15,7 @@ exports.read = async(req,res)=>{
 
 exports.list = async(req,res)=>{
     try{
-       const ShowDataList = await MetricModel.findAll();
+       const ShowDataList = await subCategoryModel.findAll();
        res.status(200).json(ShowDataList);
     }catch(e){
         res.status(500).json('Server Error' + e.message);
@@ -24,7 +24,7 @@ exports.list = async(req,res)=>{
 
 exports.create = async(req,res)=>{
     try{
-       const addData = await MetricModel.create(req.body);
+       const addData = await subCategoryModel.create(req.body);
        res.status(200).json(addData);
     }catch(e){
         res.status(500).json('Server Error' + e.message);
@@ -45,7 +45,7 @@ exports.modify = async (req, res) => {
       }
       
       // เรียกใช้ method update() ของ Sequelize
-      const [affectedRows] = await MetricModel.update(updateData, {
+      const [affectedRows] = await subCategoryModel.update(updateData, {
         where: {
           id: id
         }
@@ -71,7 +71,7 @@ exports.modify = async (req, res) => {
       }
   
       // เรียกใช้ method destroy() ของ Sequelize
-      const affectedRows = await MetricModel.destroy({
+      const affectedRows = await subCategoryModel.destroy({
         where: {
           id: id
         }

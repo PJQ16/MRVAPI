@@ -71,6 +71,6 @@ const DetailModel = sequelize.define('detail',{
 });
 
 
-    DetailModel.sync(      {alter:true}     );
+  /*   DetailModel.sync(      {alter:true}     ); */
     module.exports = DetailModel;
 

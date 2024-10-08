@@ -84,8 +84,8 @@ const TransectionModel = sequelize.define('transection',{
       },
       actual_value: {
         type: DataTypes.FLOAT(20,2),
-        primaryKey:true,
-        autoIncrement:true,
+        defaultValue:null,
+        allowNull:true
       },
       verify_status:{
         type: DataTypes.INTEGER(11),
@@ -95,6 +95,6 @@ const TransectionModel = sequelize.define('transection',{
 });
 
 
-    TransectionModel.sync(    {alter:true}   );
+   /*  TransectionModel.sync(    {alter:true}   ); */
     module.exports = TransectionModel   ;
 

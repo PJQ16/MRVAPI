@@ -20,6 +20,6 @@ const AssumptionModel = sequelize.define('statcAssumption',{
 });
 
 
-    AssumptionModel.sync(    {alter:true}   );
+    /* AssumptionModel.sync(    {alter:true}   ); */
     module.exports = AssumptionModel;
 

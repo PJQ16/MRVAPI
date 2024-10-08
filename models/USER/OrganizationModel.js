@@ -14,6 +14,6 @@ const OrganizationModel = sequelize.define('organization',{
 });
 
 
-OrganizationModel.sync(   {alter:true}    );
+/* OrganizationModel.sync(   {alter:true}    ); */
 module.exports = OrganizationModel;
 

@@ -21,6 +21,6 @@ const subCategoryModel = sequelize.define('subCategory',{
 });
 
 
-  subCategoryModel.sync(    {alter:true}   );
+  /* subCategoryModel.sync(    {alter:true}   ); */
     module.exports = subCategoryModel;
 

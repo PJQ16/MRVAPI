@@ -14,6 +14,6 @@ const PlanModel = sequelize.define('plan',{
 });
 
 
-    PlanModel.sync(     {alter:true}    );
+    /* PlanModel.sync(     {alter:true}    ); */
     module.exports = PlanModel;
 

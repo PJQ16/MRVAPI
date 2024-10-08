@@ -40,6 +40,6 @@ const OutputModel = sequelize.define('output',{
 });
 
 
-    OutputModel.sync(      {alter:true}      );
+   /*  OutputModel.sync(      {alter:true}      ); */
     module.exports = OutputModel;
 

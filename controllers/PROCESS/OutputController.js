@@ -1,12 +1,12 @@
 //สร้างcontroller  export ส่งออก . ชื่อตัวแปล
-const {MrvModel} =  require('../../models/associate');
+const {OutPutModel} =  require('../../models/associate');
 exports.read = async(req,res)=>{
     try{
         const { id } = req.params; // ถ้าใช้ URL params เช่น /api/resource/:id
         if (!id) {
           return res.status(400).json('Primary key (id) is required');
         }
-        const ShowData = await MrvModel.findByPk(id);
+        const ShowData = await OutPutModel.findByPk(id);
         res.status(200).json(ShowData);
      }catch(e){
          res.status(500).json('Server Error' + e.message);
@@ -15,7 +15,7 @@ exports.read = async(req,res)=>{
 
 exports.list = async(req,res)=>{
     try{
-       const ShowDataList = await MrvModel.findAll();
+       const ShowDataList = await OutPutModel.findAll();
        res.status(200).json(ShowDataList);
     }catch(e){
         res.status(500).json('Server Error' + e.message);
@@ -24,7 +24,7 @@ exports.list = async(req,res)=>{
 
 exports.create = async(req,res)=>{
     try{
-       const addData = await MrvModel.create(req.body);
+       const addData = await OutPutModel.create(req.body);
        res.status(200).json(addData);
     }catch(e){
         res.status(500).json('Server Error' + e.message);
@@ -45,7 +45,7 @@ exports.modify = async (req, res) => {
       }
       
       // เรียกใช้ method update() ของ Sequelize
-      const [affectedRows] = await MrvModel.update(updateData, {
+      const [affectedRows] = await OutPutModel.update(updateData, {
         where: {
           id: id
         }
@@ -71,7 +71,7 @@ exports.modify = async (req, res) => {
       }
   
       // เรียกใช้ method destroy() ของ Sequelize
-      const affectedRows = await MrvModel.destroy({
+      const affectedRows = await OutPutModel.destroy({
         where: {
           id: id
         }
