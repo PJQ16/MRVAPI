@@ -2,37 +2,22 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
 const TargetModel = sequelize.define('target',{
-    target_id: {
-        type: DataTypes.STRING(10),
+    id: {
+        type: DataTypes.INTEGER(11),
         primaryKey:true,
+        autoIncrement:true
       },
-      target_name:{
+      target_cores:{
+        type:DataTypes.STRING(50),
+        defaultValue:null,
+      },
+      description:{
         type:DataTypes.STRING(255),
         defaultValue:null,
-        comment:'ชื่อเป้าหมายย่อย'
-      },
-      sub_target_name:{
-        type:DataTypes.STRING(255),
-        defaultValue:null,
-        comment:'ชื่อแผนย่อย'
-      },
-      target_operator: {
-        type:DataTypes.STRING(255),
-        defaultValue:null,
-        comment:'มากกว่า,น้อยกว่า,เท่ากับ'
-      },
-      milestone_id:{
-        type: DataTypes.INTEGER(11),
-        defaultValue:null,
-        comment:'milestone ระยะเวลา'
-      },
-      kpi_id:{
-        type: DataTypes.INTEGER(11),
-        defaultValue:null
-      },
+      }
 });
 
 
-   /*  TargetModel.sync(    {alter:true}   ); */
+      /* TargetModel.sync(    {alter:true}   ); */
     module.exports = TargetModel;
 

@@ -1,24 +1,41 @@
+ const jwt = require('jsonwebtoken');
+const { UserModel } = require('../models/associate');
+const { default: next } = require('next');
 
-module.exports ={
-    getToken: (req)=>{
-        return req.headers.authorization.replace('Bearer ', '');
-    },
-    isLogin:(req,res,next)=>{
-        require('dotenv').config()
-        const jwt = require('jsonwebtoken');
-
-        if(req.headers.authorization != null){
-        const token =  req.headers.authorization.replace('Bearer ', '');
-        const secret = process.env.SECRET_KEY
-        try{
-            const verify = jwt.verify(token,secret);
-            if(verify != null){
-                next();
-            }
-        }catch(e){
-            res.status(401).json('Authoriza Fail');
+exports.authCheck = async(req,res,next) =>{
+    try{
+        const headerToken = req.headers.authorization
+        if(!headerToken){
+            return res.status(401).json({message:'No Token, Authorization'})
         }
-     }
-      
+
+        const token = headerToken.split(" ")[1];
+        const decode = jwt.verify(token,process.env.SECRET_KEY);
+        req.user = decode
+      next()
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message:'Token Invalid'});
+
+    }
+}
+
+exports.adminCheck = async(req,res,next)=>{
+    try{
+        const {email} = req.user
+        console.log(email);
+        const adminUser = await UserModel.findOne({
+            where:{
+                email:email
+            }
+        });
+        if(!adminUser || adminUser.role_id !== 1){
+            return res.status(403).json({message:'Acess denied Admin'});
+        }
+       /*  console.log('admin check',adminUser); */
+        next();
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message:'Admin access denied'});
     }
 }

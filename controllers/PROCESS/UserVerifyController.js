@@ -1,12 +1,12 @@
 //สร้างcontroller  export ส่งออก . ชื่อตัวแปล
-const {OrganizationModel} =  require('../../models/associate')
+const {UserVerifyModel} = require('../../models/associate');
 exports.read = async(req,res)=>{
     try{
         const { id } = req.params; // ถ้าใช้ URL params เช่น /api/resource/:id
         if (!id) {
           return res.status(400).json('Primary key (id) is required');
         }
-        const ShowData = await OrganizationModel.findByPk(id);
+        const ShowData = await UserVerifyModel.findByPk(id);
         res.status(200).json(ShowData);
      }catch(e){
          res.status(500).json('Server Error' + e.message);
@@ -15,9 +15,7 @@ exports.read = async(req,res)=>{
 
 exports.list = async(req,res)=>{
     try{
-       const ShowDataList = await OrganizationModel.findAll({
-        attributes:['id','organization_name']
-       });
+       const ShowDataList = await UserVerifyModel.findAll();
        res.status(200).json(ShowDataList);
     }catch(e){
         res.status(500).json('Server Error' + e.message);
@@ -26,7 +24,7 @@ exports.list = async(req,res)=>{
 
 exports.create = async(req,res)=>{
     try{
-       const addData = await OrganizationModel.create(req.body);
+       const addData = await UserVerifyModel.create(req.body);
        res.status(200).json(addData);
     }catch(e){
         res.status(500).json('Server Error' + e.message);
@@ -47,7 +45,7 @@ exports.modify = async (req, res) => {
       }
       
       // เรียกใช้ method update() ของ Sequelize
-      const [affectedRows] = await OrganizationModel.update(updateData, {
+      const [affectedRows] = await UserVerifyModel.update(updateData, {
         where: {
           id: id
         }
@@ -73,7 +71,7 @@ exports.modify = async (req, res) => {
       }
   
       // เรียกใช้ method destroy() ของ Sequelize
-      const affectedRows = await OrganizationModel.destroy({
+      const affectedRows = await UserVerifyModel.destroy({
         where: {
           id: id
         }

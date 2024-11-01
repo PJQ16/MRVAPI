@@ -30,6 +30,6 @@ const SubTargetModel = sequelize.define('subTarget',{
 });
 
 
-   /*  SubTargetModel.sync(    {alter:true}   ); */
+   /*   SubTargetModel.sync(    {alter:true}   );  */
     module.exports = SubTargetModel;
 

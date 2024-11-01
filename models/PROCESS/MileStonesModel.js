@@ -19,19 +19,14 @@ const MileStoneModel = sequelize.define('milestone',{
         type: DataTypes.INTEGER(11),
         defaultValue:null
     },
-    co_benefit_active:{
-        type: DataTypes.INTEGER(11),
-        defaultValue:0,
-        allowNull:false
-    },
     active:{
         type: DataTypes.INTEGER(11),
         defaultValue:null,
         comment:'0,1'
-    }
+    },
 });
 
 
-   /*  MileStoneModel.sync(    {alter:true}   ); */
+   /*    MileStoneModel.sync(    {alter:true}   );    */
     module.exports = MileStoneModel;
 

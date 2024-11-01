@@ -95,6 +95,6 @@ const TransectionModel = sequelize.define('transection',{
 });
 
 
-   /*  TransectionModel.sync(    {alter:true}   ); */
+  /*   TransectionModel.sync(    {alter:true}   );  */
     module.exports = TransectionModel   ;
 

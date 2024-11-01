@@ -1,19 +1,19 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../connect/config')
  
-const PlanModel = sequelize.define('plan',{
+const PermissionModel = sequelize.define('permission',{
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey:true,
         autoIncrement:true,
       },
-    name: {
+    permission_name:{
         type: DataTypes.STRING(255),
-        defaultValue:null
-      },
+        allowNull:false
+    }
 });
 
 
-  /*   PlanModel.sync(     {alter:true}    );  */
-    module.exports = PlanModel;
+   /*  PermissionModel.sync(   {alter:true}     );  */
+    module.exports = PermissionModel;
 

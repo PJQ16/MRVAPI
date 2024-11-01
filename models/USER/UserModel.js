@@ -25,10 +25,6 @@ const UserModel = sequelize.define('user',{
         type: DataTypes.STRING(255),
         allowNull:false
     },
-    address:{
-        type: DataTypes.TEXT,
-        allowNull:false
-    },
     role_id:{
         type: DataTypes.INTEGER(11),
         allowNull:false
@@ -38,7 +34,7 @@ const UserModel = sequelize.define('user',{
         allowNull:false
     },
     sessionId:{
-        type: DataTypes.INTEGER(255),
+        type: DataTypes.STRING(255),
         defaultValue:null
     }
 });
@@ -49,6 +45,6 @@ const UserModel = sequelize.define('user',{
     user.password = hash;
   }); 
 
-   /*  UserModel.sync(   {alter:true}   ); */
+  /*   UserModel.sync(   {alter:true}   );    */
     module.exports = UserModel;
 
