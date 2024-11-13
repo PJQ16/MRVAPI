@@ -1,6 +1,5 @@
- const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const { UserModel } = require('../models/associate');
-const { default: next } = require('next');
 
 exports.authCheck = async(req,res,next) =>{
     try{

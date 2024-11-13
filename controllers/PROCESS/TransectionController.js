@@ -1,22 +1,27 @@
 //สร้างcontroller  export ส่งออก . ชื่อตัวแปล
-const {TransectionModel, DetailModel,sequelize} = require('../../models/associate');
-exports.read = async(req,res)=>{
-    try{
-        const { id } = req.params; // ถ้าใช้ URL params เช่น /api/resource/:id
-        if (!id) {
-          return res.status(400).json('Primary key (id) is required');
-        }
-        const ShowData = await TransectionModel.findByPk(id);
-        res.status(200).json(ShowData);
-     }catch(e){
-         res.status(500).json('Server Error' + e.message);
-     }
-}
+const {
+  TransectionModel,
+  DetailModel,
+  sequelize,
+} = require("../../models/associate");
+exports.read = async (req, res) => {
+  try {
+    const { id } = req.params; // ถ้าใช้ URL params เช่น /api/resource/:id
+    if (!id) {
+      return res.status(400).json("Primary key (id) is required");
+    }
+    const ShowData = await TransectionModel.findByPk(id);
+    res.status(200).json(ShowData);
+  } catch (e) {
+    res.status(500).json("Server Error" + e.message);
+  }
+};
 
-exports.list = async(req,res)=>{
-    try{
-      const query = `
+exports.list = async (req, res) => {
+  try {
+    const query = `
       SELECT
+ ms.id as milestone_id,     
 actual_year,
 p.id as plan_id,
 p.name as plan_name,
@@ -24,6 +29,7 @@ sc.id as sub_category_id,
 category,
 ts.id as transec_id,
 pr.period_type as period_type,
+d.id as detail_id,
 desciption,
 unit,
 capex,
@@ -61,43 +67,51 @@ plan_id,sub_category_id,transec_id ASC;
 
     // รัน query โดยใช้ Sequelize
     const data = await sequelize.query(query, {
-      type: sequelize.QueryTypes.SELECT
+      type: sequelize.QueryTypes.SELECT,
     });
 
     // จัดโครงสร้างข้อมูลตามที่ต้องการ
     const result = data.reduce((acc, row) => {
       // หา actual_year ที่มีอยู่แล้วใน acc หรือสร้างใหม่ถ้าไม่มี
-      let yearEntry = acc.find(entry => entry.actual_year === row.actual_year);
+      let yearEntry = acc.find(
+        (entry) => entry.actual_year === row.actual_year
+      );
       if (!yearEntry) {
         yearEntry = {
+          milestone_id: row.milestone_id,
           actual_year: row.actual_year,
-          plan: []
+          plan: [],
         };
         acc.push(yearEntry);
       }
 
       // หา plan ที่มีอยู่แล้วใน actual_year นี้ หรือสร้างใหม่ถ้าไม่มี
-      let planEntry = yearEntry.plan.find(plan => plan.plan_name === row.plan_name);
+      let planEntry = yearEntry.plan.find(
+        (plan) => plan.plan_name === row.plan_name
+      );
       if (!planEntry) {
         planEntry = {
           plan_name: row.plan_name,
-          subCategories: []
+          subCategories: [],
         };
         yearEntry.plan.push(planEntry);
       }
 
       // หา subCategory ที่มีอยู่แล้วใน plan หรือสร้างใหม่ถ้าไม่มี
-      let subCategoryEntry = planEntry.subCategories.find(subCat => subCat.category === row.category);
+      let subCategoryEntry = planEntry.subCategories.find(
+        (subCat) => subCat.category === row.category
+      );
       if (!subCategoryEntry) {
         subCategoryEntry = {
           category: row.category,
-          detail: []
+          detail: [],
         };
         planEntry.subCategories.push(subCategoryEntry);
       }
 
       // เพิ่มรายละเอียดใน detail
       subCategoryEntry.detail.push({
+        id: row.transec_id,
         desciption: row.desciption,
         period_type: row.period_type,
         unit: row.unit,
@@ -121,125 +135,189 @@ plan_id,sub_category_id,transec_id ASC;
         nov_val: row.nov_val,
         dec_val: row.dec_val,
         actual_value: row.actual_value,
-        verify_status: row.verify_status
+        verify_status: row.verify_status,
       });
 
       return acc;
     }, []);
 
     res.status(200).json(result);
-    }catch(e){
-        res.status(500).json('Server Error' + e.message);
-    }
-}
-
-exports.create = async (req, res) => {
-  const years = 1;  // ค่า milestone_id ที่จะเช็ค
-  try {
-      // ดึงข้อมูลจากตาราง Detail ทั้งหมด
-      const detailData = await DetailModel.findAll({
-          attributes: ['id']
-      });
-      
-      // เช็คว่ามีข้อมูลใน Transection ที่ milestone_id เท่ากับค่า years หรือไม่
-      const checkTransection = await TransectionModel.findAll({
-          attributes: ['id'],
-          where: {
-              milestone_id: years
-          }
-      });
-
-      // ถ้ามีข้อมูลอยู่ใน milestone_id แล้ว ให้ return ค่าว่างๆ
-      if (checkTransection.length > 0) {
-          return res.status(200).json({ message: "Milestone already exists, no data added." });
-      }
-
-      // ถ้า milestone_id ไม่มีข้อมูล ให้ทำการ loop ข้อมูล detail แล้วเพิ่มลงใน Transection
-      const transactionsToCreate = detailData.map(detail => ({
-          milestone_id: years, // ใส่ค่า milestone_id ที่ต้องการ
-          detail_id: detail.id, // ใช้ id จากตาราง detail
-          plan_value: 0,        // หรือค่าอื่นๆ ตามที่ต้องการ
-          jan_val: 0,
-          feb_val: 0,
-          mar_val: 0,
-          apr_val: 0,
-          may_val: 0,
-          jun_val: 0,
-          jul_val: 0,
-          aug_val: 0,
-          sep_val: 0,
-          oct_val: 0,
-          nov_val: 0,
-          dec_val: 0,
-          actual_value: 0,
-          verify_status: 0
-      }));
-
-      // ใช้ bulkCreate เพื่อเพิ่มข้อมูลลงในฐานข้อมูล
-      const createdTransactions = await TransectionModel.bulkCreate(transactionsToCreate);
-
-      res.status(200).json(createdTransactions); // ส่ง response กลับหลังจากเพิ่มข้อมูลเสร็จ
   } catch (e) {
-      res.status(500).json('Server Error: ' + e.message);
+    res.status(500).json("Server Error" + e.message);
   }
 };
 
+exports.create = async (req, res) => {
+  const { milestone_id } = req.body; // ค่า milestone_id ที่จะเช็ค
+  try {
+    // ดึงข้อมูลจากตาราง Detail ทั้งหมด
+    const detailData = await DetailModel.findAll({
+      attributes: ["id"],
+    });
+
+    // เช็คว่ามีข้อมูลใน Transection ที่ milestone_id เท่ากับค่า years หรือไม่
+    const checkTransection = await TransectionModel.findAll({
+      attributes: ["id"],
+      where: {
+        milestone_id: milestone_id,
+      },
+    });
+
+    // ถ้ามีข้อมูลอยู่ใน milestone_id แล้ว ให้ return ค่าว่างๆ
+    if (checkTransection.length > 0) {
+      return;
+    }
+
+    // ถ้า milestone_id ไม่มีข้อมูล ให้ทำการ loop ข้อมูล detail แล้วเพิ่มลงใน Transection
+    const transactionsToCreate = detailData.map((detail) => ({
+      milestone_id: milestone_id, // ใส่ค่า milestone_id ที่ต้องการ
+      detail_id: detail.id, // ใช้ id จากตาราง detail
+      plan_value: 0, // หรือค่าอื่นๆ ตามที่ต้องการ
+      jan_val: 0,
+      feb_val: 0,
+      mar_val: 0,
+      apr_val: 0,
+      may_val: 0,
+      jun_val: 0,
+      jul_val: 0,
+      aug_val: 0,
+      sep_val: 0,
+      oct_val: 0,
+      nov_val: 0,
+      dec_val: 0,
+      actual_value: 0,
+      verify_status: 0,
+    }));
+
+    // ใช้ bulkCreate เพื่อเพิ่มข้อมูลลงในฐานข้อมูล
+    const createdTransactions = await TransectionModel.bulkCreate(
+      transactionsToCreate
+    );
+
+    res.status(200).json(createdTransactions); // ส่ง response กลับหลังจากเพิ่มข้อมูลเสร็จ
+  } catch (e) {
+    res.status(500).json("Server Error: " + e.message);
+  }
+};
 
 exports.modify = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const updateData = req.body; // ข้อมูลใหม่ที่ต้องการปรับปรุง
-      
-      if (!id) {
-        return res.status(400).json('Primary key (id) is required');
-      }
-      
-      if (!updateData || Object.keys(updateData).length === 0) {
-        return res.status(400).json('No data provided to update');
-      }
-      
-      // เรียกใช้ method update() ของ Sequelize
-      const [affectedRows] = await TransectionModel.update(updateData, {
-        where: {
-          id: id
-        }
-      });
-      
-      if (affectedRows === 0) {
-        return res.status(404).json('Data not found or no changes made');
-      }
-      
-      res.status(200).json({ message: 'Data updated successfully' });
-    } catch (e) {
-      res.status(500).json('Server Error: ' + e.message);
-    }
-  };
+  let transaction; // ประกาศ transaction ก่อน try-catch
+  try {
+    const {
+      id,
+      plan_value,
+      jan_val,
+      feb_val,
+      mar_val,
+      apr_val,
+      may_val,
+      jun_val,
+      jul_val,
+      aug_val,
+      sep_val,
+      oct_val,
+      nov_val,
+      dec_val,
+      actual_value,
+      verify_status,
+    } = req.body;
 
-  
-  exports.remove = async (req, res) => {
-    try {
-      const { id } = req.params;
-  
+    if (Array.isArray(req.body)) {
+      // Handle bulk update
+      transaction = await sequelize.transaction();
+
+      const updatePromises = req.body.map((data) =>
+        TransectionModel.update(
+          {
+            plan_value: data.plan_value,
+            jan_val: data.jan_val,
+            feb_val: data.feb_val,
+            mar_val: data.mar_val,
+            apr_val: data.apr_val,
+            may_val: data.may_val,
+            jun_val: data.jun_val,
+            jul_val: data.jul_val,
+            aug_val: data.aug_val,
+            sep_val: data.sep_val,
+            oct_val: data.oct_val,
+            nov_val: data.nov_val,
+            dec_val: data.dec_val,
+            actual_value: data.actual_value,
+            verify_status: data.verify_status,
+          },
+          {
+            where: { id: data.id },
+            transaction,
+          }
+        )
+      );
+
+      await Promise.all(updatePromises);
+      await transaction.commit();
+      res.status(200).json({ message: "Bulk data updated successfully" });
+    } else {
+      // Handle single update
       if (!id) {
-        return res.status(400).json('Primary key (id) is required');
+        return res.status(400).json({ error: "ID is required" });
       }
-  
-      // เรียกใช้ method destroy() ของ Sequelize
-      const affectedRows = await TransectionModel.destroy({
-        where: {
-          id: id
+
+      transaction = await sequelize.transaction();
+
+      await TransectionModel.update(
+        {
+          jan_val,
+          feb_val,
+          mar_val,
+          apr_val,
+          may_val,
+          jun_val,
+          jul_val,
+          aug_val,
+          sep_val,
+          oct_val,
+          nov_val,
+          dec_val,
+          actual_value,
+          verify_status,
+        },
+        {
+          where: { id },
+          transaction,
         }
-      });
-  
-      // ตรวจสอบผลลัพธ์
-      if (affectedRows === 0) {
-        return res.status(404).json('Data not found or already deleted');
-      }
-  
-      // ส่งข้อความว่าลบข้อมูลสำเร็จ
-      res.status(200).json('Data deleted successfully');
-    } catch (e) {
-      res.status(500).json('Server Error: ' + e.message);
+      );
+
+      await transaction.commit();
+      res.status(200).json({ message: "Monthly data updated successfully" });
     }
-  };
-  
+  } catch (error) {
+    if (transaction) await transaction.rollback();
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.remove = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json("Primary key (id) is required");
+    }
+
+    // เรียกใช้ method destroy() ของ Sequelize
+    const affectedRows = await TransectionModel.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    // ตรวจสอบผลลัพธ์
+    if (affectedRows === 0) {
+      return res.status(404).json("Data not found or already deleted");
+    }
+
+    // ส่งข้อความว่าลบข้อมูลสำเร็จ
+    res.status(200).json("Data deleted successfully");
+  } catch (e) {
+    res.status(500).json("Server Error: " + e.message);
+  }
+};

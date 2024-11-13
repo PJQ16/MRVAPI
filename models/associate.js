@@ -23,7 +23,7 @@ const UserInputModel = require('./PROCESS/UserInputModel');
 const UserVerifyModel = require('./PROCESS/UserVerifyModel');
 const PermissionModel = require('./USER/PermissionModel');
 const RolePermissionModel = require('./USER/RolePermissionModel');
-
+const ProjectModel = require('./PROCESS/ProjectModel');
 // Associations
 Multi_factorModel.hasMany(MileStoneModel, {
     foreignKey: 'multifactor_id',
@@ -271,5 +271,6 @@ module.exports = {
     UserInputModel,
     UserVerifyModel,
     PermissionModel,
-    RolePermissionModel
+    RolePermissionModel,
+    ProjectModel
 };

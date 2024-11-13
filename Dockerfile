@@ -1,23 +1,23 @@
-# Use the official Node.js image
-FROM node:18
+# ./apiServer/Dockerfile
+FROM node:20-alpine
 
-# Set working directory inside the container
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
 
-# Install nodemon globally for development
+# Install nodemon globally
 RUN npm install -g nodemon
 
-# Copy the rest of the application code to the working directory
+# Copy all files
 COPY . .
 
-# Expose the port that the app runs on
+# Expose the application port
 EXPOSE 8000
 
-# Default command to run the app in development with nodemon
+# Command to start the server with nodemon
 CMD ["nodemon", "server.js"]

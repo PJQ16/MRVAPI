@@ -1,0 +1,12 @@
+# .dockerignore
+
+# ละเว้น node_modules
+node_modules
+
+# ละเว้น Dockerfile และ .dockerignore เอง
+Dockerfile
+.dockerignore
+
+# ละเว้นไฟล์ที่ไม่ต้องการอื่น ๆ
+.git
+.gitignore
